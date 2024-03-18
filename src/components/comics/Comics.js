@@ -1,19 +1,18 @@
-import React , {useState, useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
+import './comicsList.scss';
+import { useState, useEffect, useRef } from 'react';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import useMarvelService from '../../services/MarvelService';
-import './charList.scss';
+import AppBanner from "../appBanner/AppBanner";
 
-const CharList = (props) => {
-
+export const Comics = (props) => {
     const [charlist, setCharlist] = useState([]);
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [charEnded, setCharEnded] = useState(false);
 
     
-    const {loading, error, getAllCharacters} = useMarvelService();
+    const {loading, error, getAllComics} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -21,13 +20,13 @@ const CharList = (props) => {
 
      const onRequest = (offset, initial) => {        
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
-        getAllCharacters(offset)
+        getAllComics(offset)
             .then(onCharListLoaded)
     }
 
     const onCharListLoaded = (newCharlist) => {
         let ended = false;
-        if(newCharlist.length < 9){
+        if(newCharlist.length < 8){
             ended = true;
         }
 
@@ -38,11 +37,6 @@ const CharList = (props) => {
     }
 
     const itemRefs = useRef([]);
-
-    const styleSelectChar = (id) => {
-        itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
-        itemRefs.current[id].classList.add('char__item_selected');
-    }
 
     // Этот метод создан для оптимизации, 
     // чтобы не помещать такую конструкцию в метод render
@@ -56,20 +50,17 @@ const CharList = (props) => {
             return (
                 <li      
                     ref={elem => itemRefs.current[i] = elem}               
-                    className="char__item"
-                    key={item.id}                    
-                    onClick={() => {
-                        props.onCharSelected(item.id);
-                        styleSelectChar(i);
-                        }}>
-                        <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                        <div className="char__name">{item.name}</div>
+                    className="comic__item"
+                    key={item.id}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle} className='comic__item-img'/>
+                        <div className="comic__item__name">{item.name}</div>
+                        <div className='comic__item__price'>{item.price ? item.price : 'Price not avalible.'}</div>
                 </li>
             )
         });
         // А эта конструкция вынесена для центровки спиннера/ошибки
         return (
-            <ul className="char__grid">
+            <ul className="comic__grid">
                 {items}
             </ul>
         )
@@ -80,7 +71,9 @@ const CharList = (props) => {
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
     
     return (
-        <div className="char__list">
+    <>
+        <AppBanner/>
+        <div className="comic__list">
             {errorMessage}
             {spinner}
             {items}
@@ -92,12 +85,7 @@ const CharList = (props) => {
                 <div className="inner">load more</div>
             </button>
         </div>
+    </>
     )
     
 }
-
-CharList.propTypes = {
-    onCharSelected: PropTypes.func.isRequired
-}
-
-export default CharList;
