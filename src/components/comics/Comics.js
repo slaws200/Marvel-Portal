@@ -4,6 +4,7 @@ import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import AppBanner from "../appBanner/AppBanner";
+import {Link} from 'react-router-dom';
 
 export const Comics = (props) => {
     const [charlist, setCharlist] = useState([]);
@@ -48,13 +49,15 @@ export const Comics = (props) => {
             }
             
             return (
-                <li      
+                <li 
                     ref={elem => itemRefs.current[i] = elem}               
                     className="comic__item"
-                    key={item.id}>
-                        <img src={item.thumbnail} alt={item.name} style={imgStyle} className='comic__item-img'/>
-                        <div className="comic__item__name">{item.name}</div>
-                        <div className='comic__item__price'>{item.price ? item.price : 'Price not avalible.'}</div>
+                    key={i}>
+                        <Link to={`/comics/${item.id}`}>
+                            <img src={item.thumbnail} alt={item.name} style={imgStyle} className='comic__item-img'/>
+                            <div className="comic__item__name">{item.name}</div>
+                            <div className='comic__item__price'>{item.price ? item.price + '$' : 'Price not avalible.'}</div>
+                        </Link>
                 </li>
             )
         });
