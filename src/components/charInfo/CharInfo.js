@@ -5,6 +5,7 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import useMarvelService from '../../services/MarvelService';
+import {Link} from 'react-router-dom';
 
 const CharInfo = (props) => {
 
@@ -77,7 +78,7 @@ const Wiew = ({char}) => {
                 {comics.length > 0 ? null : <p>There is no comics with this character</p>}
                 {comics.slice(0, 10).map((item, i) => (
                     <li key={i} className="char__comics-item">
-                    {item.name}
+                        <Link to={`/comics/${/comics\/(\d+)/.exec(item.resourceURI)?.[1] || null}`}>{item.name}</Link>
                     </li>
                 ))}
             </ul>

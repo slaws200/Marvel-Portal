@@ -6,7 +6,6 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import AppBanner from "../appBanner/AppBanner";
 import './singleComicPage.scss';
-import xMen from '../../resources/img/x-men.png';
 
 const SingleComicPage = () => {
 
@@ -56,7 +55,7 @@ const Wiew = ({comic}) => {
             <img src={thumbnail} alt={name} className='single-comic__img'/>
             <div className='single-comic__info'>
                 <h2 className='single-comic__name'>{name}</h2>
-                <p className='single-comic__descr'>{description != '' ? description : 'Description for this comic are not avalible.'}</p>
+                <p className='single-comic__descr'>{description !== '' ? description : 'Description for this comic are not avalible.'}</p>
                 <div className='single-comic__price'>{price ? price + '$' : 'Price not avalible.'}</div>
             </div>
             <Link to="/comics" className='single-comic__back'>Back to all</Link>

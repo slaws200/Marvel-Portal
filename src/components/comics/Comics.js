@@ -1,5 +1,5 @@
 import './comicsList.scss';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect} from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -37,8 +37,6 @@ export const Comics = (props) => {
         setCharEnded(charEnded => ended);
     }
 
-    const itemRefs = useRef([]);
-
     // Этот метод создан для оптимизации, 
     // чтобы не помещать такую конструкцию в метод render
     const renderItems = (arr) => {
@@ -49,8 +47,7 @@ export const Comics = (props) => {
             }
             
             return (
-                <li 
-                    ref={elem => itemRefs.current[i] = elem}               
+                <li               
                     className="comic__item"
                     key={i}>
                         <Link to={`/comics/${item.id}`}>
